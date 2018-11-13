@@ -34,13 +34,13 @@
 
         <!-- Normalizer -->
         <service id="serializer.normalizer.constraint_violation_list" class="Symfony\Component\Serializer\Normalizer\ConstraintViolationListNormalizer">
-            <argument type="collection" />
-            <argument type="service" id="serializer.name_converter.metadata_aware" />
+            <argument>%serializer.default_context%</argument>
             <!-- Run before serializer.normalizer.object -->
             <tag name="serializer.normalizer" priority="-915" />
         </service>
 
         <service id="serializer.normalizer.dateinterval" class="Symfony\Component\Serializer\Normalizer\DateIntervalNormalizer">
+            <argument>%serializer.default_context%</argument>
             <!-- Run before serializer.normalizer.object -->
             <tag name="serializer.normalizer" priority="-915" />
         </service>
@@ -52,11 +52,15 @@
         </service>
 
         <service id="serializer.normalizer.datetime" class="Symfony\Component\Serializer\Normalizer\DateTimeNormalizer">
+            <argument>%serializer.default_context%</argument>
             <!-- Run before serializer.normalizer.object -->
             <tag name="serializer.normalizer" priority="-910" />
         </service>
 
         <service id="serializer.normalizer.json_serializable" class="Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer">
+            <argument>null</argument>
+            <argument>null</argument>
+            <argument>%serializer.default_context%</argument>
             <!-- Run before serializer.normalizer.object -->
             <tag name="serializer.normalizer" priority="-900" />
         </service>
@@ -74,7 +78,7 @@
             <argument type="service" id="property_info" on-invalid="ignore" />
             <argument type="service" id="serializer.mapping.class_discriminator_resolver" on-invalid="ignore" />
             <argument>null</argument>
-            <argument type="collection" />
+            <argument>%serializer.default_context%</argument>
 
             <!-- Run after all custom normalizers -->
             <tag name="serializer.normalizer" priority="-1000" />
@@ -119,6 +123,7 @@
 
         <!-- Encoders -->
         <service id="serializer.encoder.xml" class="Symfony\Component\Serializer\Encoder\XmlEncoder">
+            <argument>%serializer.default_context%</argument>
             <tag name="serializer.encoder" />
         </service>
 
@@ -127,10 +132,14 @@
         </service>
 
         <service id="serializer.encoder.yaml" class="Symfony\Component\Serializer\Encoder\YamlEncoder">
+            <argument>null</argument>
+            <argument>null</argument>
+            <argument>%serializer.default_context%</argument>
             <tag name="serializer.encoder" />
         </service>
 
         <service id="serializer.encoder.csv" class="Symfony\Component\Serializer\Encoder\CsvEncoder">
+            <argument>%serializer.default_context%</argument>
             <tag name="serializer.encoder" />
         </service>
 

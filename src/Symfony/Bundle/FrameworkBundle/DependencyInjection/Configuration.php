@@ -808,7 +808,7 @@ class Configuration implements ConfigurationInterface
                         ->arrayNode('default_context')
                             ->normalizeKeys(false)
                             ->useAttributeAsKey('name')
-                            ->defaultValue(array())
+                            ->defaultValue([])
                             ->prototype('variable')->end()
                         ->end()
                     ->end()

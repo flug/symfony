@@ -1010,7 +1010,6 @@ abstract class FrameworkExtensionTest extends TestCase
         $this->assertEquals(new Reference('property_info', ContainerBuilder::IGNORE_ON_INVALID_REFERENCE), $container->getDefinition('serializer.normalizer.object')->getArgument(3));
         $this->assertEquals(['setCircularReferenceHandler', [new Reference('my.circular.reference.handler')]], $container->getDefinition('serializer.normalizer.object')->getMethodCalls()[0]);
         $this->assertEquals(['setMaxDepthHandler', [new Reference('my.max.depth.handler')]], $container->getDefinition('serializer.normalizer.object')->getMethodCalls()[1]);
-        $this->assertEquals(['enable_max_depth' => true], $container->getDefinition('serializer.normalizer.object')->getArgument('default_context'));
     }
 
     public function testRegisterSerializerExtractor()

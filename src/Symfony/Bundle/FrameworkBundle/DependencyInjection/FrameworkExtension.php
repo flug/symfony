@@ -1476,9 +1476,7 @@ class FrameworkExtension extends Extension
             $container->getDefinition('serializer.normalizer.object')->replaceArgument(6, $defaultContext);
         }
 
-        if ($config['default_context'] ?? false) {
-            $container->getDefinition('serializer.normalizer.object')->setArgument('default_context', $config['default_context']);
-        }
+        $container->setParameter('serializer.default_context', $config['default_context'] ?? []);
     }
 
     private function registerPropertyInfoConfiguration(ContainerBuilder $container, XmlFileLoader $loader)
