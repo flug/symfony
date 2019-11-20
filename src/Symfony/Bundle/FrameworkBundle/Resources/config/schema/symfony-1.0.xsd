@@ -230,7 +230,7 @@
     <xsd:complexType name="serializer">
         <xsd:choice minOccurs="0" maxOccurs="unbounded">
             <xsd:element name="mapping" type="file_mapping" />
-            <xsd:element name="default-context" type="metadata" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="default-context" type="serializer_default_context" />
         </xsd:choice>
         <xsd:attribute name="enabled" type="xsd:boolean" />
         <xsd:attribute name="enable-annotations" type="xsd:boolean" />
@@ -241,6 +241,10 @@
 
     <xsd:complexType name="property_info">
         <xsd:attribute name="enabled" type="xsd:boolean" />
+    </xsd:complexType>
+
+    <xsd:complexType name="serializer_default_context">
+        <xsd:attribute name="enable_max_depth" type="xsd:boolean"/>
     </xsd:complexType>
 
     <xsd:complexType name="cache">

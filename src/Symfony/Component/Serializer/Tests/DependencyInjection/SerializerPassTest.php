@@ -14,7 +14,10 @@ namespace Symfony\Component\Serializer\Tests\DependencyInjection;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\Serializer\Context\ContextInterface;
+use Symfony\Component\Serializer\Context\DefaultContext;
 use Symfony\Component\Serializer\DependencyInjection\SerializerPass;
+use Symfony\Component\Serializer\Normalizer\JsonSerializableNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 /**
@@ -69,17 +72,25 @@ class SerializerPassTest extends TestCase
         $this->assertEquals($expected, $definition->getArgument(0));
         $this->assertEquals($expected, $definition->getArgument(1));
     }
-
-    public function testServiceHasDefaultContextParameterArgument()
+    public function testServiceHasDefaultContextInterface()
     {
         $container = new ContainerBuilder();
-
-        $definition = $container->register('serializer')->setClass(ObjectNormalizer::class)->setArguments([null, null, null, null, null, null, null])->addTag('serializer.normalizer')->addTag('serializer.encoder');
+        $container->register('serializer_context', DefaultContext::class)->addArgument(['enable_max_depth' => true])->addTag(ContextInterface::class);
+        $definition = $container->register('serializer')->setClass(ObjectNormalizer::class)->setArguments([null, null, null, null, null, null, $container->get('serializer_context')])->addTag('serializer.normalizer')->addTag('serializer.encoder');
         $definition->setAutowired(true);
-
         $serializerPass = new SerializerPass();
         $serializerPass->process($container);
-
-        $this->assertEquals('%serializer.default_context%', $definition->getArgument('$defaultContext'));
+        $this->assertInstanceOf(ContextInterface::class, $definition->getArgument(6));
+    }
+    public function testServiceHasDefaultNonContextInterface()
+    {
+        $container = new ContainerBuilder();
+        $container->register('serializer_context', DefaultContext::class)->addArgument(['enable_max_depth' => true])->addTag(ContextInterface::class);
+        $definition = $container->register('serializer')->setClass(JsonSerializableNormalizer::class)->setArguments([null, null,  ['enable_max_depth' => true] ])->addTag('serializer.normalizer')->addTag('serializer.encoder');
+        $definition->setAutowired(true);
+        $serializerPass = new SerializerPass();
+        $serializerPass->process($container);
+        
+        $this->assertEquals(['enable_max_depth' => true], $definition->getArgument(2));
     }
 }

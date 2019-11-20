@@ -11,6 +11,7 @@
 
 namespace Symfony\Component\Serializer\Encoder;
 
+use Symfony\Component\Serializer\Context\ContextInterface;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 
 /**

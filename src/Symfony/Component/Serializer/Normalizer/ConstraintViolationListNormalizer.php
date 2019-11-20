@@ -11,6 +11,8 @@
 
 namespace Symfony\Component\Serializer\Normalizer;
 
+use Symfony\Component\Serializer\Context\ContextInterface;
+use Symfony\Component\Serializer\Context\DefaultContext;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
@@ -32,8 +34,12 @@ class ConstraintViolationListNormalizer implements NormalizerInterface, Cacheabl
     private $defaultContext;
     private $nameConverter;
 
-    public function __construct($defaultContext = [], NameConverterInterface $nameConverter = null)
+    public function __construct(/** ContextInterface */ $defaultContext = null, NameConverterInterface $nameConverter = null)
     {
+        if(!$defaultContext instanceof ContextInterface && is_array($defaultContext)){
+            $defaultContext = new DefaultContext($defaultContext);
+            @trigger_error("you must pass an object of type ". ContextInterface::class .", the passage of an array is depreciated", E_USER_DEPRECATED);
+        }
         $this->defaultContext = $defaultContext;
         $this->nameConverter = $nameConverter;
     }
