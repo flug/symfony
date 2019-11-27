@@ -38,7 +38,7 @@ class ConstraintViolationListNormalizer implements NormalizerInterface, Cacheabl
     {
         if(!$defaultContext instanceof ContextInterface && is_array($defaultContext)){
             $defaultContext = new DefaultContext($defaultContext);
-            @trigger_error("you must pass an object of type ". ContextInterface::class .", the passage of an array is depreciated", E_USER_DEPRECATED);
+            @trigger_error(sprintf('Since symfony 5.x the defaultContext in %s must be a %s instead of an array', __CLASS__, ContextInterface::class));
         }
         $this->defaultContext = $defaultContext;
         $this->nameConverter = $nameConverter;
